@@ -10,11 +10,11 @@ class Loading extends React.Component {
         return (
             <div className="flex">
                 <div className="flex-shrink-0 w-12">
-                    <LoadingIcon class="text-black"/>
+                    <LoadingIcon class="text-black dark:text-white h-10 w-10"/>
                 </div>
                 <div>
                     <div>
-                        <div className="text-xl font-medium text-red-600">{this.props.loadingData.title}</div>
+                        <div className="text-xl font-medium text-black dark:text-white">{this.props.loadingData.title}</div>
                         <p className="text-gray-500 dark:text-gray-400">{this.props.loadingData.description}</p>
                     </div>
 

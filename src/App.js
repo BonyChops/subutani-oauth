@@ -28,7 +28,7 @@ class App extends React.Component {
       )
     } else {
       return (
-        <Loading loadingData={{title:"おまち", description: "まて"}} />
+        <Loading loadingData={{title:"お待ちください...", description: "開発中です..."}} />
       )
       return (
         <LoginToDiscord accessor={this.stateAccessor} />
