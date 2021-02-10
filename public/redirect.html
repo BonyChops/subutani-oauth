@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+
+<body>
+    <style>
+        @media (prefers-reduced-motion: no-preference) {
+            .App-logo {
+                animation: App-logo-spin infinite 0.5s linear;
+            }
+        }
+
+        @keyframes App-logo-spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    Stay tight...
+    <img class="App-logo" src="https://i.ytimg.com/vi/nS61U_K1YNU/hqdefault.jpg" />
+    <script>
+        const urlParam = location.search.substr(1)
+        console.log(urlParam);
+        const result = urlParam.split("&").map(data => {
+            const result = data.split("=");
+            return {
+                title: result[0],
+                value: result[1]
+            }
+        });
+        console.log(result);
+
+        if (!(!window.opener || window.opener.closed)) {
+            window.opener.onSuccess(result);
+        }
+        window.close();
+    </script>
+
+</body>
+
+</html>

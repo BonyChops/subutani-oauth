@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom';
 
 const Button = (props) => {
     return (
-        <button class="focus:outline-none content-center p-0 items-cennter justify-center flex max-h-auto shadow-md bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            <div class="flex-shrink-0">
-                <img src={logo} class="App-logo h-12 w-12"></img>
+        <button className="focus:outline-none p-3 bg-white dark:bg-gray-900 hover:bg-gray-400 dark:hover:bg-gray-700 max-w-lg rounded-xl items-center shadow-md flex space-x-4">
+            <div className="flex-shrink-0">
+                <img src={props.logo} className="h-12 w-12"></img>
             </div>
             <div>
-            <p class="text-white">認証</p>
+                <div className="text-xl font-medium text-black dark:text-white">認証</div>
             </div>
         </button>
     );
