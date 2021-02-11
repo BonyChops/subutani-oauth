@@ -74,12 +74,15 @@ class App extends React.Component {
       return (
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
-    } else if(this.state.discordOAuth.code === undefined){
+    } else if (this.state.discordOAuth.access_token !== undefined) {
+      return (
+        <DiscordLoggedIn userName={this.state.discordOAuth.userInfo.username} serverName={this.state.serverInfo.serverName}/>
+      )
+    } else if (this.state.discordOAuth === false) {
       return (
         <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} />
       )
-    }else if(this.state.discordOAuth.code !== undefined && this.state.discordOAuth.access_token === undefined){
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    } else if (this.state.discordOAuth.access_token === undefined) {
       DiscordOAuth(this.state.authServer + "/discordOAuth", this.state.discordOAuth.code, this.stateAccessor);
       return (
         <Loading loadingData={{ title: "お待ちください...", description: "認証しています..." }} />

@@ -21,10 +21,20 @@ const DiscordOAuth = (address, code, accessor) => {
                         if (result.headers.get("Content-Type").indexOf("json") !== -1) {
                             const body = await result.json();
                             console.log(body);
+                            const message = {
+                                no_approved_guild: {
+                                    title: "誰だお前！？",
+                                    description: `本マインクラフト鯖は${body.guild_name}のメンバーのみが参加可能のホワイトリスト制になってます．`
+                                }
+                            }
+                            const { title, description } = (message[body.type] === undefined) ? {
+                                title: "認証サーバーとの通信に失敗しました",
+                                description: `サーバーのアドレス(${address})が間違っている可能性があります．再度お試しください．`
+                            } : message[body.type];
                             accessor({
                                 error: {
-                                    title: "認証サーバーとの通信に失敗しました",
-                                    description: `サーバーのアドレス(${address})が間違っている可能性があります．再度お試しください．`,
+                                    title,
+                                    description,
                                     errorDetail: `Server returned ${result.status}\n${JSON.stringify(responseToObject(result, body), null, 2)}.`
                                 }
                             })

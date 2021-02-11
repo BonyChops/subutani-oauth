@@ -29,7 +29,7 @@ class TypeAuthServer extends React.Component {
                 <div>
                     <div>
                         <div className="text-xl font-medium text-black dark:text-white">認証サーバーを入力してください</div>
-                        <p className="text-gray-500 dark:text-gray-400">ここがわからない場合は鯖主にお問い合わせくださいss！！！！！！！！！！</p>
+                        <p className="text-gray-500 dark:text-gray-400">ここがわからない場合は鯖主にお問い合わせください．</p>
                         <br />
                         <form onSubmit={this.serverInfoUpdate}>
                             <input type="text"
