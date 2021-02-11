@@ -1,9 +1,9 @@
-const responseToObject = async(response) => {
+const responseToObject = (response, body) => {
     return {
         status: response.status,
         statusText: response.statusText,
         type: response.type,
-        body: await response.clone().text(),
+        body,
         url: response.url
     }
 }

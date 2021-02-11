@@ -9,7 +9,8 @@ import TypeAuthServer from './components/TypeAuthServer/TypeAuthServer';
 import { useParams, HashRouter } from "react-router-dom";
 import './App.css';
 import ConnectionCheck from './components/functions/ConnectionCheck';
-
+import DiscordOAuth from './components/functions/DiscordOAuth';
+import DiscordLoggedIn from './components/DiscordLoggedIn/DiscordLoggedIn';
 
 class App extends React.Component {
   state = {
@@ -19,7 +20,8 @@ class App extends React.Component {
     error: false,
     authServer: false,
     serverInfo: false,
-    query: false
+    query: false,
+    discordOAuth: false,
   }
 
   constructor(props) {
@@ -72,19 +74,20 @@ class App extends React.Component {
       return (
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
-    } else {
+    } else if(this.state.discordOAuth.code === undefined){
       return (
-        <LoginToDiscord accessor={this.stateAccessor} />
+        <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} />
       )
+    }else if(this.state.discordOAuth.code !== undefined && this.state.discordOAuth.access_token === undefined){
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      DiscordOAuth(this.state.authServer + "/discordOAuth", this.state.discordOAuth.code, this.stateAccessor);
       return (
-        <Loading loadingData={{ title: "お待ちください...", description: "開発中です..." }} />
+        <Loading loadingData={{ title: "お待ちください...", description: "認証しています..." }} />
       )
-
     }
   }
 
   render() {
-    console.log(this.state.serverInfo.serverOwner )
     return (
       <div className={this.state.dark ? "App dark" : "App"}>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-6 flex flex-col justify-center sm:py-12">
@@ -96,7 +99,7 @@ class App extends React.Component {
           </div>
           <div className="fixed w-full text-center bottom-0">
             <div className="bg-white inline-block content-center p-3 rounded-t-xl shadow-xl ">
-              <p className="p-2 text-center text-xs text-black ">Login Form Developed by Bony_Chops<br />{(this.state.serverInfo.serverOwner !== undefined) ? `Server Hosted by ${this.state.serverInfo.serverOwner}` : "test"}</p>
+              <p className="p-2 text-center text-xs text-black ">Login Form Developed by Bony_Chops<br />{(this.state.serverInfo !== false) ? `Server Hosted by ${this.state.serverInfo.serverOwner}` : null}</p>
               <button onClick={this.toggleDark} className="rounded-xl hover:bg-black bg-white shadow-md focus:outline-none p-2">
                 <p className="text-gray-500">{this.state.dark ? "ライトテーマ" : "ダークテーマ"}</p>
               </button>
