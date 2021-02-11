@@ -8,13 +8,14 @@ import TypeAuthServer from './components/TypeAuthServer/TypeAuthServer';
 //import { useParams } from "react-router";
 import { useParams, HashRouter } from "react-router-dom";
 import './App.css';
+import ConnectionCheck from './components/functions/ConnectionCheck';
 
 
 class App extends React.Component {
   state = {
     stateInitialized: true,
     mounted: false,
-    dark: false,
+    dark: true,
     error: false,
     authServer: false,
     serverInfo: false,
@@ -34,17 +35,15 @@ class App extends React.Component {
       };
     });
     await this.setState({
-      stateInitialized: true,
-      mounted: false,
-      dark: false,
-      error: false,
-      authServer: false,
       query
     });
 
     if (query.some(data => data.title == "authServer")) {
-      console.log("y");
-      this.setState({ authServer: query.find(data => data.title == "authServer").value });
+      let authServer = query.find(data => data.title == "authServer").value;
+      if (authServer.indexOf("http") === -1) {
+        authServer = "http://" + authServer;
+      }
+      this.setState({ authServer });
     } else {
       console.log("None");
     }
@@ -65,25 +64,27 @@ class App extends React.Component {
       )
     } else if (this.state.authServer === false) {
       console.log(this.state.authServer)
-      return(
+      return (
         <TypeAuthServer accessor={this.stateAccessor} />
       )
-    } else if (this.state.serverInfo === false){
-      return(
+    } else if (this.state.serverInfo === false) {
+      ConnectionCheck(this.state.authServer + "/serverStatus", this.stateAccessor);
+      return (
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
-    }else{
-      return (
-        <Loading loadingData={{ title: "お待ちください...", description: "開発中です..." }} />
-      )
+    } else {
       return (
         <LoginToDiscord accessor={this.stateAccessor} />
       )
+      return (
+        <Loading loadingData={{ title: "お待ちください...", description: "開発中です..." }} />
+      )
+
     }
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.state.serverInfo.serverOwner )
     return (
       <div className={this.state.dark ? "App dark" : "App"}>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-6 flex flex-col justify-center sm:py-12">
@@ -95,7 +96,7 @@ class App extends React.Component {
           </div>
           <div className="fixed w-full text-center bottom-0">
             <div className="bg-white inline-block content-center p-3 rounded-t-xl shadow-xl ">
-              <p className="p-2 text-center text-xs text-black ">Login Form Developed by Bony_Chops<br />Server Hosted by cercil0605</p>
+              <p className="p-2 text-center text-xs text-black ">Login Form Developed by Bony_Chops<br />{(this.state.serverInfo.serverOwner !== undefined) ? `Server Hosted by ${this.state.serverInfo.serverOwner}` : "test"}</p>
               <button onClick={this.toggleDark} className="rounded-xl hover:bg-black bg-white shadow-md focus:outline-none p-2">
                 <p className="text-gray-500">{this.state.dark ? "ライトテーマ" : "ダークテーマ"}</p>
               </button>

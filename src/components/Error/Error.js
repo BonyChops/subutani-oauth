@@ -1,5 +1,6 @@
 import React from 'react';
 import ErrorIcon from '../../resources/Error';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 class Error extends React.Component {
 
@@ -31,15 +32,29 @@ class Error extends React.Component {
                 <button onClick={this.toggleErrorShow} className="text-black dark:text-white">{(this.state.showError ? "▽" : "▷") + "Show more information"}</button>
                 <div>
                     {((this.state.showError) ? (
-                        <div className="bg-yellow-300 rounded-xl text-red-600 bg-scroll text-xs shadow-lg sm:rounded-3xl p-3 w-full">
-                        <pre>
-                            <code className="">
-                                {this.props.errorData.errorDetail}
-                            </code>
-                        </pre>
-                    </div>
-                ) : null)}
-               </div>
+                        <div>
+                            <div className="bg-yellow-300 rounded-xl text-red-600 overflow-auto text-xs shadow-lg sm:rounded-3xl p-3 w-full">
+                                <pre>
+                                    <code className="">
+                                        Open Console in Developer Tools to see more details.<br />
+                                        {this.props.errorData.errorDetail}
+                                    </code>
+                                </pre>
+                            </div>
+                            <div className="object-right">
+                                <CopyToClipboard text={this.props.errorData.errorDetail}
+                                    onCopy={() => this.setState({ copied: true })}>
+                                    <button onClick={() => alert("Copied!\nPlease send these info to server owner or developer to help improving service quality! Thanks!")} className="ml-auto my-2 focus:outline-none px-4 py-1 bg-blue-500 focus:ring focus:ring-indigo-200 max-w-lg rounded-xl items-center shadow-xl flex space-x-2">
+                                        <div>
+                                            <div className="text-sm font-small text-white">Copy to Clipboard</div>
+                                        </div>
+                                    </button>
+                                </CopyToClipboard>
+                            </div>
+                        </div>
+
+                    ) : null)}
+                </div>
             </div>
         )
     }

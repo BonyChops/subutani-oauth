@@ -11,8 +11,11 @@ class TypeAuthServer extends React.Component {
 
     serverInfoUpdate = (e) => {
         e.preventDefault();
-        console.log(this.state.authServer);
-        this.props.accessor({authServer: this.state.authServer});
+        let authServer = this.state.authServer;
+        if (authServer.indexOf("http") === -1) {
+            authServer = "http://" + authServer;
+        }
+        this.props.accessor({ authServer });
     }
 
     tmpServerHandler = (event) => {
