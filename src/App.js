@@ -11,6 +11,7 @@ import './App.css';
 import ConnectionCheck from './components/functions/ConnectionCheck';
 import DiscordOAuth from './components/functions/DiscordOAuth';
 import DiscordLoggedIn from './components/DiscordLoggedIn/DiscordLoggedIn';
+import LoginToMojang from './components/LoginToMojang/LoginToMojang';
 
 class App extends React.Component {
   state = {
@@ -22,6 +23,7 @@ class App extends React.Component {
     serverInfo: false,
     query: false,
     discordOAuth: false,
+    mojangReady: false
   }
 
   constructor(props) {
@@ -74,9 +76,13 @@ class App extends React.Component {
       return (
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
+    } else if (this.state.mojangReady) {
+      return(
+        <LoginToMojang serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor}/>
+      )
     } else if (this.state.discordOAuth.access_token !== undefined) {
       return (
-        <DiscordLoggedIn userName={this.state.discordOAuth.userInfo.username} serverName={this.state.serverInfo.serverName}/>
+        <DiscordLoggedIn accessor={this.stateAccessor} userName={this.state.discordOAuth.userInfo.username} serverName={this.state.serverInfo.serverName} />
       )
     } else if (this.state.discordOAuth === false) {
       return (

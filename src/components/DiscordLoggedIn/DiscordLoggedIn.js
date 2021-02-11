@@ -3,6 +3,19 @@ import CheckIcon from '../../resources/Check';
 import LoadingIcon from '../../resources/Loading';
 
 class DiscordLoggedIn extends React.Component{
+
+    constructor(props){
+        super(props);
+    }
+
+    componentDidMount(){
+        setTimeout(() => {
+            this.props.accessor({
+                mojangReady: true
+            })
+        }, 3000);
+    }
+
     render(){
         return(
 <div className="flex">
