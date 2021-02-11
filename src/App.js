@@ -4,13 +4,50 @@ import mojangLogo from './logo/mojang.jpg';
 import LoginToDiscord from './components/LoginToDiscord/LoginToDiscord.js';
 import Error from './components/Error/Error';
 import Loading from './components/Loading/Loading';
+import TypeAuthServer from './components/TypeAuthServer/TypeAuthServer';
+//import { useParams } from "react-router";
+import { useParams, HashRouter } from "react-router-dom";
 import './App.css';
 
 
 class App extends React.Component {
   state = {
+    stateInitialized: true,
+    mounted: false,
     dark: false,
-    error: false
+    error: false,
+    authServer: false,
+    serverInfo: false,
+    query: false
+  }
+
+  constructor(props) {
+    super(props);
+  }
+
+  async componentDidMount() {
+    const query = window.location.search.substr(1).split("&").map(data => {
+      const result = data.split("=");
+      return {
+        title: result[0],
+        value: result[1]
+      };
+    });
+    await this.setState({
+      stateInitialized: true,
+      mounted: false,
+      dark: false,
+      error: false,
+      authServer: false,
+      query
+    });
+
+    if (query.some(data => data.title == "authServer")) {
+      console.log("y");
+      this.setState({ authServer: query.find(data => data.title == "authServer").value });
+    } else {
+      console.log("None");
+    }
   }
 
   toggleDark = () => {
@@ -26,9 +63,18 @@ class App extends React.Component {
       return (
         <Error errorData={this.state.error} />
       )
-    } else {
+    } else if (this.state.authServer === false) {
+      console.log(this.state.authServer)
+      return(
+        <TypeAuthServer accessor={this.stateAccessor} />
+      )
+    } else if (this.state.serverInfo === false){
+      return(
+        <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
+      )
+    }else{
       return (
-        <Loading loadingData={{title:"お待ちください...", description: "開発中です..."}} />
+        <Loading loadingData={{ title: "お待ちください...", description: "開発中です..." }} />
       )
       return (
         <LoginToDiscord accessor={this.stateAccessor} />
@@ -37,6 +83,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className={this.state.dark ? "App dark" : "App"}>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-6 flex flex-col justify-center sm:py-12">
