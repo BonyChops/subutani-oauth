@@ -12,6 +12,8 @@ import ConnectionCheck from './components/functions/ConnectionCheck';
 import DiscordOAuth from './components/functions/DiscordOAuth';
 import DiscordLoggedIn from './components/DiscordLoggedIn/DiscordLoggedIn';
 import LoginToMojang from './components/LoginToMojang/LoginToMojang';
+import MojangById from './components/LoginConfirm/ById/ById';
+import MojangAccountHelp from './components/Help/MojangLogin/MojangLogin';
 
 class App extends React.Component {
   state = {
@@ -23,7 +25,12 @@ class App extends React.Component {
     serverInfo: false,
     query: false,
     discordOAuth: false,
-    mojangReady: false
+    mojangReady: false,
+    mojangUserInfo: {
+      id: false,
+      idReady: false
+    },
+    helpRequired: false
   }
 
   constructor(props) {
@@ -66,6 +73,13 @@ class App extends React.Component {
       return (
         <Error errorData={this.state.error} />
       )
+    } else if(this.state.helpRequired !== false){
+      switch(this.state.helpRequired){
+        case "mojang_account":
+          return(
+            <MojangAccountHelp accessor={this.stateAccessor}/>
+          )
+      }
     } else if (this.state.authServer === false) {
       console.log(this.state.authServer)
       return (
@@ -77,9 +91,15 @@ class App extends React.Component {
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
     } else if (this.state.mojangReady) {
-      return(
-        <LoginToMojang serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor}/>
+      if (this.state.mojangUserInfo.idReady) {
+        return (
+          <MojangById accessor={this.stateAccessor} id={this.state.mojangUserInfo.id}/>
+        )
+      }
+      return (
+        <LoginToMojang discordName={this.state.discordOAuth.userInfo.username} serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} />
       )
+
     } else if (this.state.discordOAuth.access_token !== undefined) {
       return (
         <DiscordLoggedIn accessor={this.stateAccessor} userName={this.state.discordOAuth.userInfo.username} serverName={this.state.serverInfo.serverName} />
