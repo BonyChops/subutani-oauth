@@ -28,8 +28,9 @@ class App extends React.Component {
     mojangReady: false,
     mojangUserInfo: {
       id: false,
-      idReady: false
     },
+    idReady: false,
+    idGo: false,
     helpRequired: false
   }
 
@@ -73,11 +74,11 @@ class App extends React.Component {
       return (
         <Error errorData={this.state.error} />
       )
-    } else if(this.state.helpRequired !== false){
-      switch(this.state.helpRequired){
+    } else if (this.state.helpRequired !== false) {
+      switch (this.state.helpRequired) {
         case "mojang_account":
-          return(
-            <MojangAccountHelp accessor={this.stateAccessor}/>
+          return (
+            <MojangAccountHelp accessor={this.stateAccessor} authServer={this.state.authServer} serverOwner={this.state.serverInfo.serverOwner} />
           )
       }
     } else if (this.state.authServer === false) {
@@ -91,9 +92,14 @@ class App extends React.Component {
         <Loading loadingData={{ title: "お待ちください...", description: `認証サーバー(${this.state.authServer})に接続しています...` }} />
       )
     } else if (this.state.mojangReady) {
-      if (this.state.mojangUserInfo.idReady) {
+      if (this.state.idGo) {
         return (
-          <MojangById accessor={this.stateAccessor} id={this.state.mojangUserInfo.id}/>
+          <Loading loadingData={{ title: "ログインしています...", description: `しばらくお待ちください...` }} />
+        )
+      }
+      if (this.state.idReady) {
+        return (
+          <MojangById accessor={this.stateAccessor} id={this.state.mojangUserInfo.id} />
         )
       }
       return (
@@ -106,7 +112,7 @@ class App extends React.Component {
       )
     } else if (this.state.discordOAuth === false) {
       return (
-        <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} />
+        <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} discordGuildName={this.state.discord_guild_name}/>
       )
     } else if (this.state.discordOAuth.access_token === undefined) {
       DiscordOAuth(this.state.authServer + "/discordOAuth", this.state.discordOAuth.code, this.stateAccessor);

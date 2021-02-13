@@ -40,7 +40,7 @@ class LoginToDiscord extends React.Component {
                 </div> */}
                     <div>
                         <div className="text-xl font-medium text-black dark:text-white">{this.props.serverName}へようこそ</div>
-                        <p className="text-gray-500 dark:text-gray-400">3J Discord サーバーに参加しているアカウントでログインしてください．</p>
+                        <p className="text-gray-500 dark:text-gray-400">{this.props.discordGuildName}に参加しているアカウントでログインしてください．</p>
                         <div className="flex">
                             <WindowOpener bridge={this.responseFromDiscord} width="400" height="700" url="https://discord.com/api/oauth2/authorize?client_id=712841103778512907&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect.html&response_type=code&scope=identify%20guilds">
                                 <Button logo={discordLogo} />
