@@ -56,7 +56,7 @@ class App extends React.Component {
     if (query.some(data => data.title == "authServer")) {
       let authServer = query.find(data => data.title == "authServer").value;
       if (authServer.indexOf("http") === -1) {
-        authServer = "http://" + authServer;
+        authServer = "https://" + authServer;
       }
       this.setState({ authServer });
     } else {
