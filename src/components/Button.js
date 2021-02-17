@@ -9,7 +9,7 @@ const Button = (props) => {
                 <img src={props.logo} className="h-12 w-12"></img>
             </div>
             <div>
-                <div className="text-xl font-medium text-black dark:text-white">認証</div>
+                <div className="text-xl font-medium text-black dark:text-white">ログイン</div>
             </div>
         </button>
     );
