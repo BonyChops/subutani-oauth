@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import mojangLogo from './logo/mojang.jpg';
 import LoginToDiscord from './components/LoginToDiscord/LoginToDiscord.js';
 import Error from './components/Error/Error';
+import Success from './components/Success/Success';
 import Loading from './components/Loading/Loading';
 import TypeAuthServer from './components/TypeAuthServer/TypeAuthServer';
 //import { useParams } from "react-router";
@@ -14,6 +15,7 @@ import DiscordLoggedIn from './components/DiscordLoggedIn/DiscordLoggedIn';
 import LoginToMojang from './components/LoginToMojang/LoginToMojang';
 import MojangById from './components/LoginConfirm/ById/ById';
 import MojangAccountHelp from './components/Help/MojangLogin/MojangLogin';
+import MojangOAuth from './components/functions/MojangOAuth';
 
 class App extends React.Component {
   state = {
@@ -31,7 +33,8 @@ class App extends React.Component {
     },
     idReady: false,
     idGo: false,
-    helpRequired: false
+    helpRequired: false,
+    successInfo: false
   }
 
   constructor(props) {
@@ -74,6 +77,10 @@ class App extends React.Component {
       return (
         <Error errorData={this.state.error} />
       )
+    } else if (this.state.successInfo !== false) {
+      return (
+        <Success successInfo={this.state.successInfo} />
+      )
     } else if (this.state.helpRequired !== false) {
       switch (this.state.helpRequired) {
         case "mojang_account":
@@ -93,13 +100,14 @@ class App extends React.Component {
       )
     } else if (this.state.mojangReady) {
       if (this.state.idGo) {
+        MojangOAuth(this.state.authServer + "/mojangOAuth", "id", this.state.mojangUserInfo, this.stateAccessor, this.state.serverInfo.serverName, this.state.discordOAuth);
         return (
           <Loading loadingData={{ title: "ログインしています...", description: `しばらくお待ちください...` }} />
         )
       }
       if (this.state.idReady) {
         return (
-          <MojangById accessor={this.stateAccessor} id={this.state.mojangUserInfo.id} />
+          <MojangById accessor={this.stateAccessor} id={this.state.mojangUserInfo.id} serverName={this.state.serverInfo.serverName} />
         )
       }
       return (
@@ -112,7 +120,7 @@ class App extends React.Component {
       )
     } else if (this.state.discordOAuth === false) {
       return (
-        <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} discordGuildName={this.state.discord_guild_name}/>
+        <LoginToDiscord serverName={this.state.serverInfo.serverName} accessor={this.stateAccessor} discordGuildName={this.state.discord_guild_name} oauthTypes={this.state.oauthTypes} />
       )
     } else if (this.state.discordOAuth.access_token === undefined) {
       DiscordOAuth(this.state.authServer + "/discordOAuth", this.state.discordOAuth.code, this.stateAccessor);

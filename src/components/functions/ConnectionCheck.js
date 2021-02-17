@@ -43,7 +43,7 @@ const ConnectionCheck = (address, accessor) => {
                         return;
                     }
                     console.log(data);
-                    accessor({ serverInfo: data.serverInfo, discord_guild_name: data.guild_name });
+                    accessor({ serverInfo: data.serverInfo, discord_guild_name: data.guild_name, oauthTypes: data.oauth });
                 },
                 async (error) => {
                     console.error(error)
