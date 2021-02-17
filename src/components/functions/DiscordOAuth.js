@@ -13,7 +13,6 @@ const DiscordOAuth = (address, code, accessor) => {
         }, Promise.resolve({}))
     }
     useEffect(() => {
-        console.log("called");
         fetch(address, {
             method: 'POST',
             body: JSON.stringify({ code }),
@@ -25,11 +24,9 @@ const DiscordOAuth = (address, code, accessor) => {
                         return;
                     }
                     loggingIn = true;
-                    console.log("called");
                     if (result.status !== 200) {
                         if (result.headers.get("Content-Type").indexOf("json") !== -1) {
                             const body = await result.json();
-                            console.log(body);
                             const message = {
                                 no_approved_guild: {
                                     title: "誰だお前！？",

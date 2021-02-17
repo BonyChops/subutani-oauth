@@ -17,9 +17,22 @@ class Error extends React.Component {
         })
     }
 
+    goBack = () => {
+        this.props.accessor({
+            error: false
+        })
+    }
+
     render() {
         return (
             <div>
+                {(this.props.errorData.allowBack === true) ? <div>
+                    <button className="mr-auto">
+                        <div>
+                            <div onClick={this.goBack} className="text-sm font-small text-gray-500 dark:text-gray-400">{"<"} 戻る</div>
+                        </div>
+                    </button><br /><br />
+                </div> : null}
                 <div className="flex-shrink-0 w-12">
                     <ErrorIcon />
                 </div>

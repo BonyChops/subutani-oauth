@@ -20,7 +20,6 @@ class TypeAuthServer extends React.Component {
 
     tmpServerHandler = (event) => {
         this.setState({ authServer: event.target.value });
-        console.log(event.target.value);
     }
 
     render() {

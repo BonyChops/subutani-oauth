@@ -52,7 +52,6 @@ class Success extends React.Component {
                                 </CopyToClipboard>
                             </div>
                         </div>
-
                     ) : null)}
                 </div>
             </div>

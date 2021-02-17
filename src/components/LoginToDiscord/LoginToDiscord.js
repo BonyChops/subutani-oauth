@@ -23,7 +23,6 @@ class LoginToDiscord extends React.Component {
             })
             return;
         }
-        console.log(res.find(data => data.title === "code").value);
         this.props.accessor({
             discordOAuth: {
                 code: res.find(data => data.title === "code").value

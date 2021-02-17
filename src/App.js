@@ -60,7 +60,7 @@ class App extends React.Component {
       }
       this.setState({ authServer });
     } else {
-      console.log("None");
+      //console.log("None");
     }
   }
 
@@ -75,7 +75,7 @@ class App extends React.Component {
   screenChanger = () => {
     if (this.state.error !== false) {
       return (
-        <Error errorData={this.state.error} />
+        <Error errorData={this.state.error} accessor={this.stateAccessor}/>
       )
     } else if (this.state.successInfo !== false) {
       return (
@@ -89,7 +89,6 @@ class App extends React.Component {
           )
       }
     } else if (this.state.authServer === false) {
-      console.log(this.state.authServer)
       return (
         <TypeAuthServer accessor={this.stateAccessor} />
       )

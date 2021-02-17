@@ -12,16 +12,13 @@ const MojangOAuth = (address, oauthType, mojangOAuth, accessor, serverName, disc
             })[c] : this[c]), aBuf)) : aBuf;
         }, Promise.resolve({}))
     }
-    console.log(Response.prototype);
-    console.log(Object.keys(Response.prototype));
     useEffect(() => {
-        console.log("checking");
         fetch(address, {
             method: 'POST',
             body: JSON.stringify({
                 oauth_type: oauthType,
                 mojangOAuth
-             }),
+            }),
             headers: {
                 'Content-Type': 'application/json',
                 authorization: discordOAuth.access_token
@@ -29,23 +26,31 @@ const MojangOAuth = (address, oauthType, mojangOAuth, accessor, serverName, disc
         })
             .then(
                 async (result) => {
-                    console.log(await result.toJSON());
                     if (result.status !== 200 && result.headers.get("content-type").indexOf("json") !== -1) {
-                        const body = result.clone().json();
+                        const body = await result.clone().json();
                         const message = {
                             access_token_expired: {
                                 title: "登録に失敗しました",
                                 description: `アクセストークンの有効期限(10分)が過ぎたみたいです．お手数ですが，最初からやり直してください...`
+                            },
+                            user_not_found: {
+                                title: "ユーザーが見つかりませんでした",
+                                description: `ユーザー名: ${mojangOAuth.id}が間違っている可能性があります．`,
+                                allowBack: true
                             }
                         }
-                        const { title, description } = (v => ((v === undefined) ? {
+                        accessor({
+                            idGo: false,
+                            idReady: false,
+                            mojangUserInfo: { id: false }
+                        })
+                        const titleTemplate = (v => ((v === undefined) ? {
                             title: "認証サーバーとの通信に失敗しました",
                             description: `サーバーのアドレス(${address})が間違っている可能性があります．再度お試しください．`
                         } : v))(message[body.type]);
                         accessor({
                             error: {
-                                title,
-                                description,
+                                ...titleTemplate,
                                 errorDetail: `Failed to parse data.\nThe address might not be auth server's one.\n${JSON.stringify(await result.toJSON(), null, 2)}.`
                             }
                         })
@@ -62,8 +67,6 @@ const MojangOAuth = (address, oauthType, mojangOAuth, accessor, serverName, disc
                         return;
                     }
                     const data = await result.clone().json();
-                    console.log("a");
-                    console.log(data);
                     accessor({
                         successInfo: {
                             title: (data.updated > 0) ? "更新しました" : "登録しました",

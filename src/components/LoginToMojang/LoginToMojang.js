@@ -38,13 +38,11 @@ class LoginToMojang extends React.Component {
 
     tmpServerHandlerById = (event) => {
         this.setState({ id: event.target.value });
-        console.log(event.target.value);
     }
 
     tmpServerHandlerBy = (event) => {
         this.setState({ authServer: event.target.value });
-        console.log(event.target.value);
-    }
+   }
 
     requireHelp = () => {
         this.props.accessor({
@@ -57,12 +55,12 @@ class LoginToMojang extends React.Component {
             <div className="flex">
                 <div className="w-full px-7">
                     <div className="flex-shrink-0 w-12">
-                        <img src={MojangIcon} class="h-10 w-10" />
+                        <img src={MojangIcon} className="h-10 w-10" />
                     </div>
-                    <div className="text-xl font-medium text-black dark:text-white">Mojang アカウントでログイン</div>
+                    {/* <div className="text-xl font-medium text-black dark:text-white">Mojang アカウントでログイン</div>
                     <p className="text-gray-500 dark:text-gray-400">Discord: {this.props.discordName}さんのアカウントでログインしてください．</p>
-                    <br />
-                    <form onSubmit={this.serverInfoUpdate}>
+                    <br /> */}
+                    {/* <form onSubmit={this.serverInfoUpdate}>
                         <input type="email"
                             className="py-3 block w-full rounded-md border dark:text-white focus:ring focus:border-blue-300 border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:shadow-lg focus:outline-none focus:ring-indigo-200"
                             placeholder="メールアドレス..."
@@ -79,17 +77,17 @@ class LoginToMojang extends React.Component {
                                 <div className="text-sm font-small text-white">ログイン</div>
                             </div>
                         </button>
-                    </form>
-                    <div className="w-full">
+                    </form> */}
+                   {/*  <div className="w-full">
                         <button className="focus:outline-none w-full ml-auto">
                             <div>
                                 <div onClick={this.requireHelp} className="text-sm font-small dark:text-white text-gray-600 text-right">パスワードはどこへ送信されますか？</div>
                             </div>
                         </button>
-                    </div>
+                    </div> */}
                     <br />
-                    <div className="text-xl font-medium text-black dark:text-white">または...</div>
-                    <p className="text-gray-500 dark:text-gray-400">ゲーム内IDを直接入力することもできます．</p>
+                    <div className="text-xl font-medium text-black dark:text-white">Minecraft: ゲームIDでログイン{/* または... */}</div>
+                    <p className="text-gray-500 dark:text-gray-400">ゲーム内IDを入力して{this.props.serverName}にログインしてください．</p>
                     <form onSubmit={this.serverInfoUpdateById}>
                         <input type="text" style={{ fontFamily: "Minecraftia" }}
                             className="py-3 block w-full rounded-md border dark:text-white focus:ring focus:border-blue-300 border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:shadow-lg focus:outline-none focus:ring-indigo-200"

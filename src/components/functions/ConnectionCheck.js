@@ -12,14 +12,10 @@ const ConnectionCheck = (address, accessor) => {
             })[c] : this[c]), aBuf)) : aBuf;
         }, Promise.resolve({}))
     }
-    console.log(Response.prototype);
-    console.log(Object.keys(Response.prototype));
     useEffect(() => {
-        console.log("checking");
         fetch(address)
             .then(
                 async (result) => {
-                    console.log(await result.toJSON());
                     if (result.status !== 200 || result.headers.get("content-type").indexOf("json") === -1) {
                         accessor({
                             error: {
@@ -31,7 +27,6 @@ const ConnectionCheck = (address, accessor) => {
                         return;
                     }
                     const data = await result.json();
-                    console.log("a");
                     if (data.serverInfo === undefined || !(["serverName", "serverOwner"]).every(key => data.serverInfo[key] !== undefined)) {
                         accessor({
                             error: {
@@ -42,7 +37,6 @@ const ConnectionCheck = (address, accessor) => {
                         })
                         return;
                     }
-                    console.log(data);
                     accessor({ serverInfo: data.serverInfo, discord_guild_name: data.guild_name, oauthTypes: data.oauth });
                 },
                 async (error) => {
