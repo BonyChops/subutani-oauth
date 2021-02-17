@@ -13,7 +13,7 @@ class TypeAuthServer extends React.Component {
         e.preventDefault();
         let authServer = this.state.authServer;
         if (authServer.indexOf("http") === -1) {
-            authServer = "http://" + authServer;
+            authServer = "https://" + authServer;
         }
         this.props.accessor({ authServer });
     }
