@@ -8,7 +8,7 @@ const DiscordOAuth = (address, code, accessor) => {
             let aBuf = await a;
             return (typeof this[c] !== 'function') ? ((aBuf[c] = ((["body", "headers"]).includes(c) ? ({
                 headers: { "content-type": this.headers.get("content-type") },
-                body: await this.clone().text()
+                body: (this.headers.get("content-type").indexOf("json") !== -1) ? await this.clone().json() : await this.clone().text()
             })[c] : this[c]), aBuf)) : aBuf;
         }, Promise.resolve({}))
     }
