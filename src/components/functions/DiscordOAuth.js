@@ -26,7 +26,7 @@ const DiscordOAuth = (address, code, accessor) => {
                     loggingIn = true;
                     if (result.status !== 200) {
                         if (result.headers.get("Content-Type").indexOf("json") !== -1) {
-                            const body = await result.json();
+                            const body = await result.clone().json();
                             const message = {
                                 no_approved_guild: {
                                     title: "誰だお前！？",
